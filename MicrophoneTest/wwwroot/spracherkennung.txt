@@ -1,0 +1,60 @@
+
+Also, betreffend Spracherkennung: 
+
+Auf die Daten vom Mikrophon kann wie folgt zugegriffen werden: 
+https://developers.google.com/web/fundamentals/media/recording-audio
+
+Dabei ist der Browser-Support gemäss
+https://www.html5rocks.com/en/tutorials/getusermedia/intro/
+wie folgt> 
+
+- Android 3.0+
+- Chrome for Android (0.16+)
+- Firefox Mobile 10.0
+- iOS6 Safari and Chrome (partial support)
+- Microsoft Edge 
+
+d.h. relative alles, ausser InternetExplorer. 
+
+Danach kann die Audio-Datei mit einem Speech-to-Text-Programm transcribiert werden. 
+Kommerzielle APIs dazu von Google und Amazon, vermutlich hat Microsoft auch noch etwas. 
+
+Dann gibt es einige OpenSource Programme:
+ - von Facebook: wav2letter
+ - von Baidu: DeepSpeech2
+ - von Johns Hopkins University: Kaldi
+
+gemäss einem Link weiter Unten ist die Fehlerrate von Kaldi am niedrigsten, und Kaldi > DeepSpeech > Wav2Letter. 
+Ein anderer Link sagt, mit Maximum-Training sei Wav2Letter am besten. 
+Im ersten Youtube-Link unten ein Beispiel von Kaldi mit einer Android-App (Spracherkennung läuft auf PC) Fragt sich noch, ob eines oder alle dieser Programme auf Windows läuft. 
+
+Links:
+
+
+
+-- https://cloud.google.com/speech-to-text/
+-- https://aws.amazon.com/polly/
+-- https://github.com/facebookresearch/wav2letter
+-- https://towardsdatascience.com/introducing-wav2latter-9e94ae13246
+-- https://kaldi-asr.org/doc/index.html
+-- https://github.com/julius-speech/julius
+-- kaldi > deepspeech > wav2letter
+--  If it is End-to-end, Wav2letter leads all the way
+-- DeepSpeech: For an okay model, you will want to train on at least 500 hours of acoustic model data.
+-- Vocabulary: You will want at least 500M words.
+-- error rate
+-- https://mc.ai/how-fast-is-facebooks-end-to-end-speech-recognition-toolkit/
+-- For all tests, LibriSpeech 100 hours data-set was used.
+-- https://www.youtube.com/watch?v=DKrjQOZDKro
+-- https://www.youtube.com/watch?v=VwVg9jCtqaU
+-- https://github.com/Kaljurand/K6nele
+-- https://kaljurand.github.io/K6nele/about/
+-- https://github.com/JuliusKunze/speechless
+-- Baidu:
+-- https://github.com/PaddlePaddle/DeepSpeech
+-- https://github.com/ynop/deepspeech-german
+
+
+https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices
+
