@@ -11,9 +11,14 @@
     // "module": "esnext", // like typescript
     // "module": "none", // Object.defineProperty, require
     // "module": "commonjs",
+
+    // https://stackoverflow.com/questions/39303385/what-does-the-tsconfig-option-lib-do
+    // https://www.typescriptlang.org/docs/handbook/compiler-options.html
     "lib": [
       "dom",
-      "es5"
+      "ES2018",
+      "WebWorker",
+      "ESNext"
     ],
 
     // "noImplicitAny": true,

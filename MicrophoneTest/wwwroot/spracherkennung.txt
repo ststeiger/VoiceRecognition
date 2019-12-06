@@ -58,3 +58,9 @@ Links:
 https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices
 
+
+
+
+
+
+https://www.reddit.com/r/dotnet/comments/9jpd3k/aspnet_core_cms_with_decent_documentation/
