@@ -1,0 +1,38 @@
+{
+  "compileOnSave": true,
+
+  "compilerOptions": {
+    "target": "es5", //"target": "es5",
+    //"module": "amd", // define, export, like playground
+    // "module": "commonjs", // require
+    "module": "es2015", // just like typescript
+    // "module": "system", // System.register
+    //  "module": "umd", // factory, require, exports
+    // "module": "esnext", // like typescript
+    // "module": "none", // Object.defineProperty, require
+    // "module": "commonjs",
+    "lib": [
+      "dom",
+      "es5"
+    ],
+
+    // "noImplicitAny": true,
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "outDir": "../wwwroot/ts",
+    "rootDir": "./",
+    "allowUnreachableCode": true
+    //,"alwaysStrict ": true,
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ],
+
+  "include": [
+    "**/*", "../wwwroot/dialogue.htm", "../Code/AshxMiddleware.cs"
+  ]
+
+}
