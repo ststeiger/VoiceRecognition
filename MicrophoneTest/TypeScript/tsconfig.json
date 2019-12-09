@@ -5,20 +5,31 @@
     "target": "es5", //"target": "es5",
     //"module": "amd", // define, export, like playground
     // "module": "commonjs", // require
-    "module": "es2015", // just like typescript
+    // "module": "es2015", // just like typescript
     // "module": "system", // System.register
     //  "module": "umd", // factory, require, exports
     // "module": "esnext", // like typescript
-    // "module": "none", // Object.defineProperty, require
+    "module": "none", // Object.defineProperty, require
     // "module": "commonjs",
 
     // https://stackoverflow.com/questions/39303385/what-does-the-tsconfig-option-lib-do
     // https://www.typescriptlang.org/docs/handbook/compiler-options.html
     "lib": [
       "dom",
-      "ES2018",
-      "WebWorker",
-      "ESNext"
+      // "ESNext"
+      "es5",
+      // "es6",
+      "es2015.promise"
+      // "es2015.core",
+      // "es2015.proxy",
+      // "es2015.iterable"
+      // "es2015"
+      // "es2016"
+      // "es2017"
+      // "es2018"
+      // "esnext"
+      // "webworker",
+      // "scripthost",
     ],
 
     // "noImplicitAny": true,
