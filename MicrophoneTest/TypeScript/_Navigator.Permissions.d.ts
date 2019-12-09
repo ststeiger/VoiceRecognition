@@ -16,7 +16,7 @@ interface PermissionStatus extends EventTarget
 {
     onchange: ((this: PermissionStatus, ev: Event) => any) | null;
     readonly state: PermissionState;
-    addEventListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+    addEvreadonlyentListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
     addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
     removeEventListener<K extends keyof PermissionStatusEventMap>(type: K, listener: (this: PermissionStatus, ev: PermissionStatusEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
     removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
@@ -50,14 +50,12 @@ interface Permissions
 }
 
 
-
-
 // Property 'permissions' does not exist on type 'Navigator'
 // for googling: Navigator.permission types in typescript@3.5.3 works fine
 // ripped from https://github.com/microsoft/TypeScript/blob/master/lib/lib.webworker.d.ts
 interface Navigator
 {
-    permissions: Permissions;
+    readonly permissions: Permissions;
     webkitGetUserMedia: any;
     msGetUserMedia: any;
     mozGetUserMedia: any;
