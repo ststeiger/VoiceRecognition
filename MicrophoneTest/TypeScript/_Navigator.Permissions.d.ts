@@ -1,5 +1,7 @@
 ﻿
+// @ts-ignore
 type PermissionName = "geolocation" | "notifications" | "push" | "midi" | "camera" | "microphone" | "speaker" | "device-info" | "background-sync" | "bluetooth" | "persistent-storage" | "ambient-light-sensor" | "accelerometer" | "gyroscope" | "magnetometer" | "clipboard";
+// @ts-ignore
 type PermissionState = "granted" | "denied" | "prompt";
 
 interface PermissionDescriptor
