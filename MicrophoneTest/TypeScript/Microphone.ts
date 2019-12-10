@@ -3,6 +3,23 @@ namespace mic2
 {
 
 
+
+
+    function foo()
+    {
+        return new Promise(function(resolve, reject)
+        {
+            // navigator.mediaDevices.enumerateDevices(resolve, reject);
+        });
+        
+    }
+    async function bar(){
+        let devs:MediaDeviceInfo[] = await navigator.mediaDevices.enumerateDevices();
+            // devs.filter((d) => d.kind === 'audioinput');
+
+    }
+    
+    
     function getUserMediaPromise(constraints: MediaStreamConstraints): Promise<MediaStream>
     {
         // https://italonascimento.github.io/applying-a-timeout-to-your-promises/
@@ -36,7 +53,12 @@ namespace mic2
         }
 
     }
-
+    
+    async function batteryInfo()
+    {
+        // await navigator.getBattery()
+    }
+    
     async function ReplayVideo()
     {
         try
@@ -44,19 +66,47 @@ namespace mic2
             // <video id="player" controls autoplay></video>
             let video = <HTMLVideoElement>document.getElementById("player");
             // let stream: MediaStream = await getUserMediaPromise({ video: true, audio: true });
-            let stream: MediaStream = await navigator.getDisplayMedia({ video: true, audio: true });
-
+            let stream: MediaStream = await navigator.getDisplayMedia({video: true, audio: true});
             video.srcObject = stream;
-        }
-        catch (e)
+        } catch (e)
         {
             console.log(e.message);
         }
-
     }
 
 
+    function stopVideoOld(stream: MediaStream)
+    {
+        let as: MediaStreamTrack[] = stream.getAudioTracks();
+        let vs: MediaStreamTrack[] = stream.getVideoTracks();
+        
+        stream.getAudioTracks().forEach(function(track) 
+        {
+            track.stop();
+        });
 
+        stream.getVideoTracks().forEach(function(track) 
+        {
+            track.stop();
+        });
+        
+        stream = null;
+    }
+    
+    
+    function stopVideo(stream: MediaStream)
+    {
+        let ts: MediaStreamTrack[] = stream.getTracks();
+        
+        for(let i =0; i < ts.length; ++i)
+        {
+            ts[i].stop();
+        }
+        
+        stream = null;
+    }
+    
+    
     let webaudio_tooling_obj = function ()
     {
 
@@ -186,6 +236,57 @@ namespace mic2
 
 namespace Micro
 {
+
+    
+
+    async function recordAudio()
+    {
+        // https://blog.sambego.be/turn-your-browser-into-an-audio-recorder/
+        // https://caniuse.com/#feat=mediarecorder
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/mimeType
+        // https://developer.mozilla.org/en-US/docs/Web/Media/Formats
+        // https://www.iana.org/assignments/media-types/media-types.xhtml
+        // https://jsfiddle.net/remarkablemark/8763r506/
+        
+        try
+        {
+            // <video id="player" controls autoplay></video>
+            let audioElement = document.getElementById("player");
+            
+            let chunks = [];
+            function saveChunkToRecording(event) 
+            {
+                chunks.push(event.data);
+            }
+            
+            function saveRecording()
+            {
+                let blob = new Blob(chunks, {
+                    type: 'audio/mp4; codecs=opus'
+                });
+                
+                let url = URL.createObjectURL(blob);
+                // With this Blob, we can create a data-url 
+                // which we can set as the src of an <audio> element.
+                audioElement.setAttribute('src', url);
+            }
+            
+            let stream = await navigator.getDisplayMedia({ audio: true });
+            let recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = saveChunkToRecording;
+            recorder.onstop = saveRecording;
+            
+            recorder.start();
+            // recoder.stop();
+        }
+        catch (e)
+        {
+            console.log(e.message);
+        }
+
+    }
+    
 
     async function askForMicrophoneAsync()
     {

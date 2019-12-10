@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="TypeScript\_dom-mediacapture-record.d.ts" />
     <TypeScriptCompile Include="TypeScript\_Navigator.Permissions.d.ts" />
   </ItemGroup>
 

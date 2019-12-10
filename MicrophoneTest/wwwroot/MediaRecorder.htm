@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+
+    <title>Microphone Example</title>
+
+    <link rel="stylesheet" type="text/css" href="css/Scrolling.Scrollbar.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%
+        }
+    </style>
+
+    <script type="text/javascript" src="ts/FormatDate.js"></script>
+
+
+    <script>
+
+    </script>
+
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+    <audio id="player" controls="controls"></audio>
+    
+    <script>
+        
+        if(!navigator.getDisplayMedia)
+        {
+            navigator.getDisplayMedia = function getUserMediaPromise(constraints)
+            {
+                return new Promise(function(resolve, reject)
+                {
+                    navigator.getUserMedia(constraints, resolve, reject);
+                });
+            }
+        }
+
+
+        async function recordAudio()
+        {
+            // https://blog.sambego.be/turn-your-browser-into-an-audio-recorder/
+
+            try
+            {
+                // <video id="player" controls autoplay></video>
+                var audioElement = document.getElementById("player");
+
+                var chunks = [];
+                function saveChunkToRecording(event)
+                {
+                    chunks.push(event.data);
+                }
+
+                function saveRecording()
+                {
+                    var blob = new Blob(chunks, {
+                        type: 'audio/mp4; codecs=opus'
+                    });
+
+                    var url = URL.createObjectURL(blob);
+                    // With this Blob, we can create a data-url 
+                    // which we can set as the src of an <audio> element.
+                    audioElement.setAttribute('src', url);
+                }
+
+                var stream = await navigator.getDisplayMedia({ audio: true });
+                var recorder = new MediaRecorder(stream);
+                recorder.ondataavailable = saveChunkToRecording;
+                recorder.onstop = saveRecording;
+
+                recorder.start();
+                // recoder.stop();
+                
+                window.currentRecorder = recorder;
+            }
+            catch (e)
+            {
+                console.log(e.message);
+            }
+
+        }
+        
+        
+        function stopRecording()
+        {
+            window.currentRecorder.stop();
+        }
+        
+        
+        function stopVideo2(stream)
+        {
+            var ts = stream.getTracks();
+            
+            for(var i = 0; i < ts.length; ++i)
+            {
+                ts[i].stop();
+            }
+            
+            stream = null;
+        }
+        
+        
+        function stopVideo3()
+        {
+            stopVideo2(document.getElementById("player").srcObject);
+        }
+        
+
+
+
+
+        ReplayVideo();
+    </script>
+
+
+    <script type="text/javascript">
+        function autorun()
+        {
+
+        }
+
+        if (window.addEventListener) window.addEventListener("load", autorun, false);
+        else if (window.attachEvent) window.attachEvent("onload", autorun);
+        else window.onload = autorun;
+    </script>
+</body>
+</html>
