@@ -48,7 +48,7 @@
   ],
 
   "include": [
-    "**/*", "../wwwroot/dialogue.htm", "../Code/AshxMiddleware.cs"
+    "**/*", "../wwwroot/dialogue.htm", "../Code/AshxMiddleware.cs", "../wwwroot/Dictation.htm"
   ]
 
 }

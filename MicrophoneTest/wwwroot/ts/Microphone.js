@@ -35,6 +35,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var mic2;
 (function (mic2) {
+    function foo() {
+        return new Promise(function (resolve, reject) {
+        });
+    }
+    function bar() {
+        return __awaiter(this, void 0, void 0, function () {
+            var devs;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, navigator.mediaDevices.enumerateDevices()];
+                    case 1:
+                        devs = _a.sent();
+                        return [2];
+                }
+            });
+        });
+    }
     function getUserMediaPromise(constraints) {
         return new Promise(function (resolve, reject) {
             navigator.getUserMedia(constraints, resolve, reject);
@@ -65,6 +82,13 @@ var mic2;
             });
         });
     }
+    function batteryInfo() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2];
+            });
+        });
+    }
     function ReplayVideo() {
         return __awaiter(this, void 0, void 0, function () {
             var video, stream, e_2;
@@ -86,6 +110,24 @@ var mic2;
                 }
             });
         });
+    }
+    function stopVideoOld(stream) {
+        var as = stream.getAudioTracks();
+        var vs = stream.getVideoTracks();
+        stream.getAudioTracks().forEach(function (track) {
+            track.stop();
+        });
+        stream.getVideoTracks().forEach(function (track) {
+            track.stop();
+        });
+        stream = null;
+    }
+    function stopVideo(stream) {
+        var ts = stream.getTracks();
+        for (var i = 0; i < ts.length; ++i) {
+            ts[i].stop();
+        }
+        stream = null;
     }
     var webaudio_tooling_obj = function () {
         var audioContext = new AudioContext();
@@ -151,6 +193,42 @@ var mic2;
 })(mic2 || (mic2 = {}));
 var Micro;
 (function (Micro) {
+    function recordAudio() {
+        return __awaiter(this, void 0, void 0, function () {
+            function saveChunkToRecording(event) {
+                chunks_1.push(event.data);
+            }
+            function saveRecording() {
+                var blob = new Blob(chunks_1, {
+                    type: 'audio/mp4; codecs=opus'
+                });
+                var url = URL.createObjectURL(blob);
+                audioElement_1.setAttribute('src', url);
+            }
+            var audioElement_1, chunks_1, stream, recorder, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        audioElement_1 = document.getElementById("player");
+                        chunks_1 = [];
+                        return [4, navigator.getDisplayMedia({ audio: true })];
+                    case 1:
+                        stream = _a.sent();
+                        recorder = new MediaRecorder(stream);
+                        recorder.ondataavailable = saveChunkToRecording;
+                        recorder.onstop = saveRecording;
+                        recorder.start();
+                        return [3, 3];
+                    case 2:
+                        e_3 = _a.sent();
+                        console.log(e_3.message);
+                        return [3, 3];
+                    case 3: return [2];
+                }
+            });
+        });
+    }
     function askForMicrophoneAsync() {
         return __awaiter(this, void 0, void 0, function () {
             var permissionStatus;
