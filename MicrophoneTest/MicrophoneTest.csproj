@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\System.Speech\System.Speech.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="TypeScript\_dom-mediacapture-record.d.ts" />
     <TypeScriptCompile Include="TypeScript\_webkitSpeechRecognition.d.ts" />
     <TypeScriptCompile Include="TypeScript\_Navigator.Permissions.d.ts" />
