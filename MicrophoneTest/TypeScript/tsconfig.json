@@ -5,11 +5,11 @@
     "target": "es5", //"target": "es5",
     //"module": "amd", // define, export, like playground
     // "module": "commonjs", // require
-    // "module": "es2015", // just like typescript
+    "module": "es2015", // just like typescript
     // "module": "system", // System.register
     //  "module": "umd", // factory, require, exports
     // "module": "esnext", // like typescript
-    "module": "none", // Object.defineProperty, require
+    // "module": "none", // Object.defineProperty, require
     // "module": "commonjs",
 
     // https://stackoverflow.com/questions/39303385/what-does-the-tsconfig-option-lib-do
