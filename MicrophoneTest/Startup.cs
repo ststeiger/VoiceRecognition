@@ -9,16 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace MicrophoneTest
 {
+
+
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,12 +36,18 @@ namespace MicrophoneTest
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                // options.Conventions.Add(new RoutingControllerModelConvention(this.Configuration));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            System.Web.Hosting.HostingEnvironment.Configure(env);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -111,6 +122,8 @@ namespace MicrophoneTest
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UsePolyfillMiddleware();
         }
 
 
