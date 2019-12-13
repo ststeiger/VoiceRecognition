@@ -87,7 +87,7 @@ namespace System.Runtime.Remoting
 namespace System
 {
     using System.Runtime.Remoting;
-    
+
     public static class AppDomainExtensions
     {
 
@@ -180,7 +180,7 @@ namespace System
         private static ObjectHandle CreateInstanceFrom(AppDomain appDomain, String assemblyFile, String typeName)
         {
             // the jit doesn't check for that, so we should 
-            if(appDomain == null)
+            if (appDomain == null)
                 throw new System.NullReferenceException();
 
             Diagnostics.Contracts.Contract.EndContractBlock();
@@ -190,7 +190,8 @@ namespace System
 
 
 
-        public static object CreateInstanceFromAndUnwrap(this AppDomain appDomain, string assemblyName, string typeName) {
+        public static object CreateInstanceFromAndUnwrap(this AppDomain appDomain, string assemblyName, string typeName)
+        {
             ObjectHandle oh = CreateInstanceFrom(appDomain, assemblyName, typeName);
             if (oh == null)
                 return null;
@@ -315,8 +316,9 @@ namespace System.Runtime.InteropServices
         //   flags:
         //     Der System.Runtime.InteropServices.TypeLibTypeFlags-Wert für den attributierten
         //     Typ, wie er in der Typbibliothek angegeben ist, aus der er importiert wurde.
-        public TypeLibTypeAttribute(short flags) {
-            this.m_flags = (TypeLibTypeFlags) flags;
+        public TypeLibTypeAttribute(short flags)
+        {
+            this.m_flags = (TypeLibTypeFlags)flags;
 
         }
 

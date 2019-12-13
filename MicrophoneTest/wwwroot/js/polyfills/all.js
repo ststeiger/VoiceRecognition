@@ -92,7 +92,7 @@ if (!Object.getOwnPropertyNames)
         }
 
         return arr;
-    }
+    };
 }
 
 

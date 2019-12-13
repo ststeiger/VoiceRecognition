@@ -31,24 +31,25 @@ namespace MicrophoneTest
             s_files.Add("es6-promise-2.0.0.min", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/es6-promise-2.0.0.min.js"));
             // s_files.Add("es6-fetch", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/fes6-etch.js"));
             s_files.Add("es6-fetch-ie8", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/es6-fetch-ie8.js"));
-            s_files.Add("object-setprototypeof-ie9", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/object-setprototypeof-ie9.js"));
             
-            s_files.Add("array-includes.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-includes.js"));
-            s_files.Add("array-foreach.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-forEach.js"));
-            s_files.Add("array-indexOf.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-indexOf.js"));
-            s_files.Add("array-isArray.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-isArray.js"));
+            s_files.Add("array-includes",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-includes.js"));
+            s_files.Add("array-forEach",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-forEach.js"));
+            s_files.Add("array-indexOf",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-indexOf.js"));
+            s_files.Add("array-isArray",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/array-isArray.js"));
             
-            s_files.Add("string-trim.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/string-trim.js"));
-            s_files.Add("string-trimStart.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/string-trimStart.js"));
-            s_files.Add("string-trimEnd.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/string-trimEnd.js"));
-            
-            s_files.Add("object-getOwnPropertyNames.js",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/object-getOwnPropertyNames.js"));
+            s_files.Add("string-trim",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/string-trim.js"));
+            s_files.Add("string-trimStart",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/string-trimStart.js"));
+            s_files.Add("string-trimEnd",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/string-trimEnd.js"));
 
+            s_files.Add("object-setPrototypeOf-ie9", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/object-setprototypeof-ie9.js"));
+            s_files.Add("object-getOwnPropertyNames",  System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/object-getOwnPropertyNames.js"));
+
+            s_files.Add("json3.min", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/json3.min.js"));
             s_files.Add("classList", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/classList.js"));
             // s_files.Add("classlist_polyfill", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/classlist_polyfill.js"));
             // s_files.Add("common", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/common.js"));
             // s_files.Add("console", System.Web.Hosting.HostingEnvironment.MapPath("js/polyfills/console.js"));
-            
+
             foreach (string key in new System.Collections.Generic.List<string>(s_files.Keys))
             {
                 if(System.IO.File.Exists( s_files[key]))
@@ -96,6 +97,9 @@ namespace MicrophoneTest
                 
                 foreach (string file in files)
                 {
+                    if (string.IsNullOrEmpty(file))
+                        continue;
+
                     if(!s_files.ContainsKey(file))
                         throw new System.IO.FileNotFoundException(file);
                 }
@@ -108,6 +112,9 @@ namespace MicrophoneTest
                 
                 foreach (string file in files)
                 {
+                    if (string.IsNullOrEmpty(file))
+                        continue;
+
                     await context.Response.WriteAsync(s_files[file]);
                 }
                 

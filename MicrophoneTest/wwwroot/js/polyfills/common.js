@@ -1,11 +1,12 @@
 ﻿
-
-Date.prototype.getTicksUTC = function () {
+Date.prototype.getTicksUTC = function ()
+{
     return Date.parse(this.toUTCString()) + this.getUTCMilliseconds();
 }; // End Function getTicksUTC
 
 
-Array.prototype.contains = function (obj) {
+Array.prototype.contains = function (obj)
+{
     var i = this.length;
     while (i--)
     {

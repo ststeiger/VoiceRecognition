@@ -326,9 +326,37 @@ namespace ScriptLoader
         }
     }
 
+    // Needed because IE5 doesn't have JSON 
+    function encodeJSON(arr: string[])
+    {
+        if (arr == null || arr.length === 0)
+            return "[]";
+
+        let stringBuilder = ["["];
+
+        for (let i = 0; i < arr.length; ++i)
+        {
+            if (i !== 0)
+                stringBuilder.push(',');
+
+            if (arr[i] == null)
+                stringBuilder.push("null");
+            else
+            {
+                stringBuilder.push('"');
+                stringBuilder.push(arr[i]); // we don't use special characters
+                stringBuilder.push('"');
+            }
+        }
+
+        stringBuilder.push("]");
+        return stringBuilder.join("");
+    }
+
 
     let hasBeenLoaded = false;
-    
+
+
     export function domReady()
     {
         if (hasBeenLoaded) return; hasBeenLoaded = true;
@@ -341,11 +369,12 @@ namespace ScriptLoader
         let fetch = isFetchAPISupported();
         let dyn = supportsDynamicImport();
         let setProto = supportsSetPrototype();
+        let hasJSON = (typeof JSON === 'object' && typeof JSON.parse === 'function');
         // let sta = supportsStaticImport();
         // let asy = isAsyncSupported();
         
         let needed = [];
-        
+
         if (!Array.isArray)
             needed.push("array-isArray");
         
@@ -360,7 +389,10 @@ namespace ScriptLoader
         
         if (!Object.getOwnPropertyNames)
             needed.push("object-getOwnPropertyNames");
-        
+
+        if (!hasJSON)
+            needed.push("json3.min");
+
         if (!String.prototype.trim)
             needed.push("string-trim");
         if (!String.prototype.trimStart)
@@ -369,7 +401,7 @@ namespace ScriptLoader
             needed.push("string-trimEnd");
         
         if (!setProto)
-            needed.push("object-setprototypeof-ie9");
+            needed.push("object-setPrototypeOf-ie9");
         
         if (!prom)
             needed.push("es6-promise-2.0.0.min");
@@ -388,7 +420,7 @@ namespace ScriptLoader
         
         if(needed.length > 0)
         {
-            let files = encodeURIComponent(JSON.stringify(needed));
+            let files = encodeURIComponent(encodeJSON(needed));
             loadScript("js/polyfills.ashx?polyfills=" + files + "&ext=.js", onPolyfilled);
         }
         else

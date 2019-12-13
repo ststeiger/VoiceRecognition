@@ -16,9 +16,9 @@ if (!window.getComputedStyle)
                 });
             }
             return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-        }
+        };
         return this;
-    }
+    };
 }
 
 if (!document.getElementsByClassName)
@@ -51,7 +51,7 @@ if (!document.getElementsByClassName)
             }
         }
         return results;
-    }
+    };
 }
 
 

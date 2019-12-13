@@ -182,6 +182,24 @@ var ScriptLoader;
             }
         }
     }
+    function encodeJSON(arr) {
+        if (arr == null || arr.length === 0)
+            return "[]";
+        var stringBuilder = ["["];
+        for (var i = 0; i < arr.length; ++i) {
+            if (i !== 0)
+                stringBuilder.push(',');
+            if (arr[i] == null)
+                stringBuilder.push("null");
+            else {
+                stringBuilder.push('"');
+                stringBuilder.push(arr[i]);
+                stringBuilder.push('"');
+            }
+        }
+        stringBuilder.push("]");
+        return stringBuilder.join("");
+    }
     var hasBeenLoaded = false;
     function domReady() {
         if (hasBeenLoaded)
@@ -193,6 +211,7 @@ var ScriptLoader;
         var fetch = isFetchAPISupported();
         var dyn = supportsDynamicImport();
         var setProto = supportsSetPrototype();
+        var hasJSON = (typeof JSON === 'object' && typeof JSON.parse === 'function');
         var needed = [];
         if (!Array.isArray)
             needed.push("array-isArray");
@@ -204,6 +223,8 @@ var ScriptLoader;
             needed.push("array-forEach");
         if (!Object.getOwnPropertyNames)
             needed.push("object-getOwnPropertyNames");
+        if (!hasJSON)
+            needed.push("json3.min");
         if (!String.prototype.trim)
             needed.push("string-trim");
         if (!String.prototype.trimStart)
@@ -211,7 +232,7 @@ var ScriptLoader;
         if (!String.prototype.trimEnd)
             needed.push("string-trimEnd");
         if (!setProto)
-            needed.push("object-setprototypeof-ie9");
+            needed.push("object-setPrototypeOf-ie9");
         if (!prom)
             needed.push("es6-promise-2.0.0.min");
         if (!fetch)
@@ -223,7 +244,7 @@ var ScriptLoader;
             loadScript(script, null);
         }
         if (needed.length > 0) {
-            var files = encodeURIComponent(JSON.stringify(needed));
+            var files = encodeURIComponent(encodeJSON(needed));
             loadScript("js/polyfills.ashx?polyfills=" + files + "&ext=.js", onPolyfilled);
         }
         else

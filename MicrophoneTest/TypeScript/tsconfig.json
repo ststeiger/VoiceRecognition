@@ -48,7 +48,7 @@
   ],
 
   "include": [
-    "**/*", "../wwwroot/dialogue.htm", "../Code/AshxMiddleware.cs", "../wwwroot/Dictation.htm", "../../SpeechRecog/Example2.cs", "../../SpeechRecog/Example1.cs"
+    "**/*", "../wwwroot/dialogue.htm", "../Code/AshxMiddleware.cs", "../wwwroot/Dictation.htm", "../../SpeechRecog/Example2.cs", "../../SpeechRecog/Example1.cs", "../wwwroot/js/polyfills/json3.min.js"
   ]
 
 }
