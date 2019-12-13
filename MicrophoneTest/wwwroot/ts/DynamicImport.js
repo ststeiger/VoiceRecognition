@@ -163,6 +163,11 @@ var ScriptLoader;
     function supportsSetPrototype() {
         return !(typeof Object.setPrototypeOf === 'undefined' && typeof Object.getOwnPropertyNames === 'function');
     }
+    function encodeJSON(arr) {
+        if (arr == null || arr.length === 0)
+            return "[]";
+        return '["' + arr.join('", "') + '"]';
+    }
     function ensureConsole() {
         var method;
         var noop = function () {
@@ -181,24 +186,6 @@ var ScriptLoader;
                 console[method] = noop;
             }
         }
-    }
-    function encodeJSON(arr) {
-        if (arr == null || arr.length === 0)
-            return "[]";
-        var stringBuilder = ["["];
-        for (var i = 0; i < arr.length; ++i) {
-            if (i !== 0)
-                stringBuilder.push(',');
-            if (arr[i] == null)
-                stringBuilder.push("null");
-            else {
-                stringBuilder.push('"');
-                stringBuilder.push(arr[i]);
-                stringBuilder.push('"');
-            }
-        }
-        stringBuilder.push("]");
-        return stringBuilder.join("");
     }
     var hasBeenLoaded = false;
     function domReady() {

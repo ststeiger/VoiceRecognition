@@ -2,6 +2,8 @@
   "compileOnSave": true,
 
   "compilerOptions": {
+    "jsx": "react",
+
     "target": "es5", //"target": "es5",
     //"module": "amd", // define, export, like playground
     // "module": "commonjs", // require

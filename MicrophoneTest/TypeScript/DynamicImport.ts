@@ -32,7 +32,18 @@ interface Array<T>
 }
 
 
-
+// This is a script-loader that has been tested with IE 5-11, Edge, Chredge, Firefox, Chrome, Chromium.
+// This script loads Promises, Fetch, JSON and some other dependencies into the browser 
+// then it loads the script indicated on attribute "data-main" of the scriptloader's script tag. 
+// on document.ready, it executes the script in data-main. 
+// All scripts are loaded with a no-cache parameter by default, including the script in data-main. 
+// Polyfills are loaded on a need-to-load basis 
+// The polyfill-handler is hardcoded a "js/polyfills.ashx?polyfills=" + files + "&ext=.js
+// all it does is merge all the required polyfills into one file in the indicated order. 
+// WARNING: sequence matters 
+// Your Babel/TypeScript transpiled ES5-file can use async-await, Promises, Fetch, JSON. 
+// It can also use dynamic imports, but that will break InternetExploder. 
+// So if you need to dynamically import files, use the function loadPolyfill(src, useCache?: boolean): Promise<void>. 
 namespace ScriptLoader
 {
 
@@ -103,17 +114,17 @@ namespace ScriptLoader
     }
 
 
-    function sum(...va_arg) 
+    function sum(...va_arg) // ... is called rest-operator 
     {
-        let result =0;
+        let result = 0;
         
         for(let i = 0; i < va_arg.length; ++i)
         {
             result += va_arg[i];
         }
-        
+
+        // return va_arg.reduce((previous, current) => { return previous + current; });
         return result;
-        // return theArgs.reduce((previous, current) => { return previous + current; });
     }
     
     
@@ -295,6 +306,15 @@ namespace ScriptLoader
     }
 
 
+    // Needed because IE5 doesn't have JSON 
+    function encodeJSON(arr: string[])
+    {
+        if (arr == null || arr.length === 0)
+            return "[]";
+        // No need to escape strings here 
+        return '["' + arr.join('", "') + '"]'
+    }
+
 
     // Avoid `console` errors in browsers that lack a console.
     function ensureConsole()
@@ -324,33 +344,6 @@ namespace ScriptLoader
                 console[method] = noop;
             }
         }
-    }
-
-    // Needed because IE5 doesn't have JSON 
-    function encodeJSON(arr: string[])
-    {
-        if (arr == null || arr.length === 0)
-            return "[]";
-
-        let stringBuilder = ["["];
-
-        for (let i = 0; i < arr.length; ++i)
-        {
-            if (i !== 0)
-                stringBuilder.push(',');
-
-            if (arr[i] == null)
-                stringBuilder.push("null");
-            else
-            {
-                stringBuilder.push('"');
-                stringBuilder.push(arr[i]); // we don't use special characters
-                stringBuilder.push('"');
-            }
-        }
-
-        stringBuilder.push("]");
-        return stringBuilder.join("");
     }
 
 

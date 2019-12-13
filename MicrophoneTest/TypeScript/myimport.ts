@@ -35,8 +35,7 @@ async function test()
     // obj.foo();
 }
 
-
-
+   
 async function main()
 {
     console.log("Main !");
