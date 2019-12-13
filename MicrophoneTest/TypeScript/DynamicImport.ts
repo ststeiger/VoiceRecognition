@@ -89,8 +89,34 @@ namespace ScriptLoader
 
         return true;
     }
+    
+    
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
+    function isRestSupported() 
+    {
+        try {
+            eval('function foo(bar, ...rest) { return 1; };');
+        } catch (error) {
+            return false;
+        }
+        return true;
+    }
 
 
+    function sum(...va_arg) 
+    {
+        let result =0;
+        
+        for(let i = 0; i < va_arg.length; ++i)
+        {
+            result += va_arg[i];
+        }
+        
+        return result;
+        // return theArgs.reduce((previous, current) => { return previous + current; });
+    }
+    
+    
     export function wait(timeout:number) :Promise<number>
     {
         return new Promise<number>( function(resolve, reject)
@@ -107,7 +133,7 @@ namespace ScriptLoader
             {
                 reject(e);
             }
-
+            
         });
     }
 
@@ -133,7 +159,7 @@ namespace ScriptLoader
         // Returns a race between our timeout and the passed in promise
         return Promise.race([ promise, timeout ]);
     }
-
+    
     export function loadPolyfill(src, useCache?: boolean): Promise<void>
     {
         if (!useCache)
@@ -159,7 +185,7 @@ namespace ScriptLoader
                     {
                         js.onreadystatechange = null;
                         resolve();
-                    };
+                    }
                 };
             }
             
@@ -218,7 +244,7 @@ namespace ScriptLoader
                     js.onreadystatechange = null;
                     if (done != null)
                         done();
-                };
+                }
             };
         }
         
@@ -302,388 +328,73 @@ namespace ScriptLoader
 
 
     let hasBeenLoaded = false;
-
-
     
-    
-
-
     export function domReady()
     {
         if (hasBeenLoaded) return; hasBeenLoaded = true;
-
+        
         console.log("dom ready");
-
-        // for IE8 
-        if (!Array.isArray)
-        {
-            Array.isArray = function (vArg: any | any[]): vArg is any[]
-            {
-                return Object.prototype.toString.call(vArg) === "[object Array]";
-            };
-        }
-
-        // for IE8 - not required 
-        if (!Array.prototype.includes)
-        {
-            // https://mariusschulz.com/blog/ecmascript-2016-array-prototype-includes
-            Array.prototype.includes = function (obj: any, fromIndex?: number)
-            {
-                if (null == this)
-                    throw new TypeError('"this" is null or not defined');
-
-                // >>> is a right shift without sign extension
-                let t = Object(this), n = t.length >>> 0;
-
-                if (0 === n)
-                    return false;
-
-                let i, o, a = 0 | fromIndex,
-                    u = Math.max(0 <= a ? a : n - Math.abs(a), 0);
-
-                for (; u < n;)
-                {
-                    if ((i = t[u]) === (o = obj) || "number" == typeof i && "number" == typeof o && isNaN(i) && isNaN(o))
-                        return true;
-
-                    u++;
-                }
-
-                return false;
-            };
-        }
-
-
-        // for IE8 
-        if (!Array.prototype.indexOf)
-            Array.prototype.indexOf = (function (Object, max, min)
-            {
-                "use strict"
-                return function indexOf(member, fromIndex)
-                {
-                    if (this === null || this === undefined)
-                        throw TypeError("Array.prototype.indexOf called on null or undefined")
-
-                    var that = Object(this), Len = that.length >>> 0, i = min(fromIndex | 0, Len)
-                    if (i < 0) i = max(0, Len + i)
-                    else if (i >= Len) return -1
-
-                    if (member === void 0)
-                    {        // undefined
-                        for (; i !== Len; ++i) if (that[i] === void 0 && i in that) return i
-                    } else if (member !== member)
-                    { // NaN
-                        return -1 // Since NaN !== NaN, it will never be found. Fast-path it.
-                    } else                          // all else
-                        for (; i !== Len; ++i) if (that[i] === member) return i
-
-                    return -1 // if the value was not found, then return -1
-                }
-            })(Object, Math.max, Math.min);
-
-        // for IE8
-        if (!Array.prototype.forEach)
-        {
-            Array.prototype.forEach = function (callback, thisArg)
-            {
-                thisArg = thisArg || window;
-                for (var i = 0; i < this.length; i++)
-                {
-                    callback.call(thisArg, this[i], i, this);
-                }
-            };
-        }
-
-        // for IE8
-        if (!Object.getOwnPropertyNames)
-        {
-            Object.getOwnPropertyNames = function (obj: any): string[]
-            {
-                let arr = [];
-                for (let k in obj)
-                {
-                    if (obj.hasOwnProperty(k))
-                        arr.push(k);
-                }
-
-                return arr;
-            }
-        }
         
-
-        // for IE8
-        if (!String.prototype.trim)
-        {
-            String.prototype.trim = function ()
-            {
-                // return this.replace(/^\s+|\s+$/g, '');
-                return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-            };
-        }
-
-        // just in case - not required 
-        if (!String.prototype.trimStart)
-        {
-            String.prototype.trimStart = function ()
-            {
-                // return this.replace(/^\s+/g, '');
-                return this.replace(/^[\s\uFEFF\xA0]+/g, '');
-            };
-        }
-
-        // just in case - not required 
-        if (!String.prototype.trimEnd)
-        {
-            String.prototype.trimEnd = function ()
-            {
-                // return this.replace(/\s+$/g, '');
-                return this.replace(/[\s\uFEFF\xA0]+$/g, '');
-            };
-        }
-        
-
         ensureConsole();
-
+        
         let prom = isPromiseSupported();
         let fetch = isFetchAPISupported();
         let dyn = supportsDynamicImport();
         let setProto = supportsSetPrototype();
         // let sta = supportsStaticImport();
         // let asy = isAsyncSupported();
-
-
-        function onFechAvailable(err?: Error)
+        
+        let needed = [];
+        
+        if (!Array.isArray)
+            needed.push("array-isArray");
+        
+        if (!Array.prototype.includes)
+            needed.push("array-includes");
+        
+        if (!Array.prototype.indexOf)
+            needed.push("array-indexOf");
+        
+        if (!Array.prototype.forEach)
+            needed.push("array-forEach");
+        
+        if (!Object.getOwnPropertyNames)
+            needed.push("object-getOwnPropertyNames");
+        
+        if (!String.prototype.trim)
+            needed.push("string-trim");
+        if (!String.prototype.trimStart)
+            needed.push("string-trimStart");
+        if (!String.prototype.trimEnd)
+            needed.push("string-trimEnd");
+        
+        if (!setProto)
+            needed.push("object-setprototypeof-ie9");
+        
+        if (!prom)
+            needed.push("es6-promise-2.0.0.min");
+        
+        if (!fetch)
+            needed.push("es6-fetch-ie8");
+        
+        function onPolyfilled(err?: Error)
         {
             if (err != null)
-                throw Error("Couldn't load fetch polyfill.\r\n" + err.message);
+                throw Error("Couldn't load polyfill.\r\n" + err.message);
 
             let script = curScript.getAttribute("data-main").split(',')[0];
             loadScript(script, null);
-        } // End Function onFechAvailable 
-
-        function onPromiseAvailable(err?: Error)
-        {
-            if (err != null)
-                throw Error("Couldn't load promise polyfill.\r\n" + err.message);
-
-            if (!fetch)
-            {
-                console.log("load fetch");
-                // loadScript("js/polyfills/fetch.js", onFechAvailable);
-                loadScript("js/polyfills/fetch_ie8.js", onFechAvailable);
-            }
-            else
-            {
-                console.log("fetch available");
-                onFechAvailable();
-            }
-
-        } // End Function onPromiseAvailable
+        } // End Function onPolyfilled
         
-        function onSetPrototypeOfAvailable(err?: Error)
+        if(needed.length > 0)
         {
-            if (err != null)
-                throw Error("Couldn't load onSetPrototypeOf polyfill.\r\n" + err.message);
-
-            if (!prom)
-            {
-                console.log("load promise");
-                loadScript("js/polyfills/es6-promise-2.0.0.min.js", onPromiseAvailable);
-            }
-            else
-            {
-                console.log("promise available");
-                onPromiseAvailable();
-            }
-
-        } // End Function onSetPrototypeOfAvailable
-
-        if (!setProto)
-        {
-            console.log("load onSetPrototypeOf");
-            loadScript("js/polyfills/object-setprototypeof-ie9.js", onSetPrototypeOfAvailable);
+            let files = encodeURIComponent(JSON.stringify(needed));
+            loadScript("js/polyfills.ashx?polyfills=" + files + "&ext=.js", onPolyfilled);
         }
         else
-        {
-            console.log("onSetPrototypeOf available");
-            onSetPrototypeOfAvailable();
-        }
-
-
-        let foo = [];
-
-
-        if (!Array.isArray)
-            foo.push("Array-isArray");
-
-        if (!Array.prototype.includes)
-            foo.push("Array-includes");
-
-        if (!Array.prototype.indexOf)
-            foo.push("Array-indexOf");
-
-        if (!Array.prototype.forEach)
-            foo.push("Array-forEach");
-
-        if (!Object.getOwnPropertyNames)
-            foo.push("Object-getOwnPropertyNames");
-
-        if (!String.prototype.trim)
-            foo.push("String-trim");
-        if (!String.prototype.trimStart)
-            foo.push("String-trimStart");
-        if (!String.prototype.trimEnd)
-            foo.push("String-trimEnd");
-
-
-        if (!setProto)
-            foo.push("object-setprototypeof-ie9");
-
-        if (!prom)
-            foo.push("es6-promise-2.0.0.min");
-
-        if (!fetch)
-            foo.push("fetch_ie8");
-        
-
-
-
-    } // End Function domReady 
-
-
-    function takeMeOut()
-    {
-
-        // for IE8 
-        if (!Array.isArray)
-        {
-            Array.isArray = function (vArg: any | any[]): vArg is any[]
-            {
-                return Object.prototype.toString.call(vArg) === "[object Array]";
-            };
-        }
-
-        // for IE8 - not required 
-        if (!Array.prototype.includes)
-        {
-            // https://mariusschulz.com/blog/ecmascript-2016-array-prototype-includes
-            Array.prototype.includes = function (obj: any, fromIndex?: number)
-            {
-                if (null == this)
-                    throw new TypeError('"this" is null or not defined');
-
-                // >>> is a right shift without sign extension
-                let t = Object(this), n = t.length >>> 0;
-
-                if (0 === n)
-                    return false;
-
-                let i, o, a = 0 | fromIndex,
-                    u = Math.max(0 <= a ? a : n - Math.abs(a), 0);
-
-                for (; u < n;)
-                {
-                    if ((i = t[u]) === (o = obj) || "number" == typeof i && "number" == typeof o && isNaN(i) && isNaN(o))
-                        return true;
-
-                    u++;
-                }
-
-                return false;
-            };
-        }
-
-
-        // for IE8 
-        if (!Array.prototype.indexOf)
-            Array.prototype.indexOf = (function (Object, max, min)
-            {
-                "use strict"
-                return function indexOf(member, fromIndex)
-                {
-                    if (this === null || this === undefined)
-                        throw TypeError("Array.prototype.indexOf called on null or undefined")
-
-                    var that = Object(this), Len = that.length >>> 0, i = min(fromIndex | 0, Len)
-                    if (i < 0) i = max(0, Len + i)
-                    else if (i >= Len) return -1
-
-                    if (member === void 0)
-                    {        // undefined
-                        for (; i !== Len; ++i) if (that[i] === void 0 && i in that) return i
-                    } else if (member !== member)
-                    { // NaN
-                        return -1 // Since NaN !== NaN, it will never be found. Fast-path it.
-                    } else                          // all else
-                        for (; i !== Len; ++i) if (that[i] === member) return i
-
-                    return -1 // if the value was not found, then return -1
-                }
-            })(Object, Math.max, Math.min);
-
-        // for IE8
-        if (!Array.prototype.forEach)
-        {
-            Array.prototype.forEach = function (callback, thisArg)
-            {
-                thisArg = thisArg || window;
-                for (var i = 0; i < this.length; i++)
-                {
-                    callback.call(thisArg, this[i], i, this);
-                }
-            };
-        }
-
-        // for IE8
-        if (!Object.getOwnPropertyNames)
-        {
-            Object.getOwnPropertyNames = function (obj: any): string[]
-            {
-                let arr = [];
-                for (let k in obj)
-                {
-                    if (obj.hasOwnProperty(k))
-                        arr.push(k);
-                }
-
-                return arr;
-            }
-        }
-
-
-        // for IE8
-        if (!String.prototype.trim)
-        {
-            String.prototype.trim = function ()
-            {
-                // return this.replace(/^\s+|\s+$/g, '');
-                return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-            };
-        }
-
-        // just in case - not required 
-        if (!String.prototype.trimStart)
-        {
-            String.prototype.trimStart = function ()
-            {
-                // return this.replace(/^\s+/g, '');
-                return this.replace(/^[\s\uFEFF\xA0]+/g, '');
-            };
-        }
-
-        // just in case - not required 
-        if (!String.prototype.trimEnd)
-        {
-            String.prototype.trimEnd = function ()
-            {
-                // return this.replace(/\s+$/g, '');
-                return this.replace(/[\s\uFEFF\xA0]+$/g, '');
-            };
-        }
-
-    }
-
-
+            onPolyfilled();
+    } // End Function domReady
+    
     
 } // End Namespace 
 
