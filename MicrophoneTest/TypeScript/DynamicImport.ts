@@ -345,11 +345,11 @@ namespace ScriptLoader
             }
         }
     }
-
-
+    
+    
     let hasBeenLoaded = false;
-
-
+    
+    
     export function domReady()
     {
         if (hasBeenLoaded) return; hasBeenLoaded = true;

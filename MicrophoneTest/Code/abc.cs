@@ -1,30 +1,93 @@
 ﻿
+using Microsoft.Net.Http.Headers;
+
 namespace MicrophoneTest
 {
     
     using System.Linq;
+    
+    // https://stackoverflow.com/questions/15486/sorting-an-ilist-in-c-sharp    
+    public static class SortExtensions
+    {
+        //  Sorts an IList<T> in place.
+        public static System.Collections.Generic.IList<T> Sort<T>(this System.Collections.Generic.IList<T> list, System.Comparison<T> comparison)
+        {
+            System.Collections.ArrayList.Adapter((System.Collections.IList)list).Sort(new ComparisonComparer<T>(comparison));
+            return list;
+        }
 
+        // Convenience method on IEnumerable<T> to allow passing of a
+        // Comparison<T> delegate to the OrderBy method.
+        public static System.Collections.Generic.IEnumerable<T> OrderBy<T>(
+            this System.Collections.Generic.IEnumerable<T> list, System.Comparison<T> comparison)
+        {
+            return list.OrderBy(t => t, new ComparisonComparer<T>(comparison));
+        }
+    }
+
+    // Wraps a generic Comparison<T> delegate in an IComparer to make it easy
+    // to use a lambda expression for methods that take an IComparer or IComparer<T>
+    public class ComparisonComparer<T> : System.Collections.Generic.IComparer<T>, System.Collections.IComparer
+    {
+        private readonly System.Comparison<T> _comparison;
+
+        public ComparisonComparer(System.Comparison<T> comparison)
+        {
+            _comparison = comparison;
+        }
+        
+        public int Compare(T x, T y)
+        {
+            return _comparison(x, y);
+        }
+
+        public int Compare(object o1, object o2)
+        {
+            return _comparison((T)o1, (T)o2);
+        }
+    }
+    
+    
     // https://madskristensen.net/blog/get-language-and-country-from-a-browser-in-aspnet/
     // https://stackoverflow.com/questions/18826282/detecting-browser-display-language
     // https://dotnetcoretutorials.com/2017/06/22/request-culture-asp-net-core/
     public class CountryInfo
     {
-
-
+        
+        // https://stackoverflow.com/questions/9927871/need-an-example-on-how-to-get-preferred-language-from-accept-language-request-he
         private static void GetHeader(Microsoft.AspNetCore.Http.HttpContext context)
         {
             // RequestHeaders.AcceptLanguage P
             string header = context.Request.Headers["Accept-Language"];
             // string header = "en-ca,en;q=0.8,en-us;q=0.6,de-de;q=0.4,de;q=0.2";
 
-            // Query syntax
-            System.Linq.IOrderedEnumerable<System.Net.Http.Headers.StringWithQualityHeaderValue> languages1 =
-            from s in header.Split(',')
-            select System.Net.Http.Headers.StringWithQualityHeaderValue.Parse(s) into foo
-            orderby foo.Quality.GetValueOrDefault(1) descending
-            select foo
-            ;
+            string def = 
+            Microsoft.Net.Http.Headers.StringWithQualityHeaderValue.ParseList(header.Split(';')).Sort(
+                delegate(StringWithQualityHeaderValue a, StringWithQualityHeaderValue b)
+                {
+                    return a.Quality.GetValueOrDefault(1).CompareTo(b.Quality.GetValueOrDefault(1));
+                }
+            )[0].ToString();
+            
 
+            Microsoft.Net.Http.Headers.StringWithQualityHeaderValue defLang = 
+                Microsoft.Net.Http.Headers.StringWithQualityHeaderValue.ParseList(header.Split(';'))
+                .OrderByDescending(x => x.Quality.GetValueOrDefault(1))
+                .FirstOrDefault();
+            
+            // Microsoft.Net.Http.Headers.StringWithQualityHeaderValue.Parse(new StringSegment(v));
+
+            
+            
+            // Query syntax
+            //System.Linq.IOrderedEnumerable<System.Net.Http.Headers.StringWithQualityHeaderValue> languages1 =
+            System.Net.Http.Headers.StringWithQualityHeaderValue defaultLanguage =
+            (from headerParts in header.Split(',')
+            select System.Net.Http.Headers.StringWithQualityHeaderValue.Parse(headerParts) into acceptLanguages
+            orderby acceptLanguages.Quality.GetValueOrDefault(1) descending
+            select acceptLanguages
+            ).FirstOrDefault();
+            
             // Method syntax
             System.Linq.IOrderedEnumerable < System.Net.Http.Headers.StringWithQualityHeaderValue > languages = header.Split(',')
                 .Select(System.Net.Http.Headers.StringWithQualityHeaderValue.Parse)

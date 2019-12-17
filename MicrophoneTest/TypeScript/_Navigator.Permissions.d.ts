@@ -4,6 +4,8 @@ declare type PermissionName = "geolocation" | "notifications" | "push" | "midi" 
 // @ts-ignore
 declare type PermissionState = "granted" | "denied" | "prompt";
 
+
+
 interface PermissionDescriptor
 {
     name: PermissionName;
