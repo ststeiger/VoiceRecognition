@@ -6,10 +6,11 @@ namespace MicrophoneTest
     public class AcceptLanguageHeaderParser
     {
 
+        
 
         // string header = "en-ca,en;q=0.8,en-us;q=0.6,de-de;q=0.4,de;q=0.2";
         public static System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, double>>
-            GetAcceptedLanguages(string header, string defaultLanguage, string[] allowedValues)
+            GetAcceptedLanguages(string header, string defaultLanguage, string[] allowedValues, double? bias)
         {
             System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, double>> ls = 
                 new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, double>>();
@@ -76,7 +77,7 @@ namespace MicrophoneTest
                 {
                     string qual = kvp[1];
 
-                    if (qual != null && qual.StartsWith("q="))
+                    if (qual != null && qual.StartsWith("q=", System.StringComparison.OrdinalIgnoreCase))
                         qual = qual.Substring(2);
 
                     // if (!double.TryParse(qual, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out quality)) { quality = 1.0; }
@@ -84,11 +85,14 @@ namespace MicrophoneTest
                     // Set quality to 0 if invalid, 1 if not present 
                 } // End if (kvp.Length > 1) 
 
-                // Note to self: 
-                // Here we introduce bias - if the default-language is in the accepted languages list. 
-                // Ensure default-language is taken, if it is among the accepted languages
-                if (defaultLanguage.Equals(key))
-                    quality = 100;
+                
+                if (defaultLanguage.Equals(key, System.StringComparison.Ordinal) && bias.HasValue)
+                {
+                    // Note to self: 
+                    // Here we introduce bias - if the default-language is in the accepted languages list. 
+                    // Ensure default-language is taken, if it is among the accepted languages
+                    quality = bias.Value;
+                }
 
                 ls.Add(
                     new System.Collections.Generic.KeyValuePair<string, double>(key, quality)
@@ -110,6 +114,13 @@ namespace MicrophoneTest
 
             return ls;
         } // End Function GetAcceptedLanguages 
+
+
+        public static System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, double>>
+            GetAcceptedLanguages(string header, string defaultLanguage, string[] allowedValues)
+        {
+            return GetAcceptedLanguages(header, defaultLanguage, allowedValues, 100.0);
+        }
 
 
         private static string GetAcceptHeaderValue(Microsoft.AspNetCore.Http.HttpContext context)
@@ -178,10 +189,14 @@ namespace MicrophoneTest
         public static void Test()
         {
             // var language = window.navigator.userLanguage || window.navigator.language;
+            // window.navigator.userLanguage is IE only and it's the language set in Windows Control Panel - Regional Options and NOT browser language, 
+            // but you could suppose that a user using a machine with Window Regional settings set to France is probably a French user.
+            // navigator.language is FireFox and all other browser.
 
             Microsoft.AspNetCore.Http.HttpContext ctx = new Microsoft.AspNetCore.Http.DefaultHttpContext();
 
             ctx.Request.Headers["device-id"] = "20317";
+            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
             ctx.Request.Headers["Accept-Language"] = "it;de-CH,en-ca,en;q=0.8,en-us;q=0.6,de-de;q=0.4,de;q=0.2";
             // ctx.Request.Headers["Accept-Language"] = "";
 
