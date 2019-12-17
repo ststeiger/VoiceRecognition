@@ -15,6 +15,8 @@ namespace MicrophoneTest
 
     public class Program
     {
+
+
         public static void Main(string[] args)
         {
             // ListAvailableRecognizers();

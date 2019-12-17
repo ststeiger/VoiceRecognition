@@ -53,7 +53,20 @@ namespace MicrophoneTest
     // https://dotnetcoretutorials.com/2017/06/22/request-culture-asp-net-core/
     public class CountryInfo
     {
-        
+
+        public static void TestGetHeader()
+        {
+            Microsoft.AspNetCore.Http.HttpContext ctx = new Microsoft.AspNetCore.Http.DefaultHttpContext();
+
+            ctx.Request.Headers["device-id"] = "20317";
+            ctx.Request.Headers["Accept-Language"] = "en-ca,en;q=0.8,en-us;q=0.6,de-de;q=0.4,de;q=0.2";
+
+            GetHeader(ctx);
+
+        }
+
+
+
         // https://stackoverflow.com/questions/9927871/need-an-example-on-how-to-get-preferred-language-from-accept-language-request-he
         private static void GetHeader(Microsoft.AspNetCore.Http.HttpContext context)
         {
