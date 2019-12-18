@@ -5,9 +5,8 @@ namespace MicrophoneTest
 
     public class AcceptLanguageHeaderParser
     {
-
         
-
+        
         // string header = "en-ca,en;q=0.8,en-us;q=0.6,de-de;q=0.4,de;q=0.2";
         public static System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, double>>
             GetAcceptedLanguages(string header, string defaultLanguage, string[] allowedValues, double? bias)
