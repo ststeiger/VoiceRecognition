@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
+using Microsoft.AspNetCore.SecurityHeadersPolicy;
+
 namespace MicrophoneTest
 {
 
@@ -48,6 +50,21 @@ namespace MicrophoneTest
         {
             System.Web.Hosting.HostingEnvironment.Configure(env);
 
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+            });
+
+
+            app.UseSecurityHeadersMiddleware(new SecurityHeadersBuilder()
+                .AddDefaultSecurePolicy()
+                // https://www.veggiespam.com/headers/
+                .AddCustomHeader("X-Powered-By", "PHP/5.1.2-1") // hehe, good luck trying to hack PHP 
+                .AddCustomHeader("X-Drupal-Cache", "UNCACHEABLE ") 
+                .AddCustomHeader("X-Drupal-Dynamic-Cache", "UNCACHEABLE") 
+            );
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,6 +73,9 @@ namespace MicrophoneTest
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+
+
 
 
             app.UseDefaultFiles(new DefaultFilesOptions()

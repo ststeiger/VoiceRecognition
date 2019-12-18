@@ -39,6 +39,9 @@ namespace MicrophoneTest
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseKestrel(c => c.AddServerHeader = false)
+                .UseIISIntegration()
                 .UseStartup<Startup>();
         }
 
