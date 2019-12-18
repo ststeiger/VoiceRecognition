@@ -1,14 +1,10 @@
-using System.Globalization;
-using System;
-using System.Net.Http;
-using System.Reflection.Emit;
+
 using MicrophoneTest.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 
 
 namespace MicrophoneTest.Code
@@ -32,7 +28,7 @@ namespace MicrophoneTest.Code
             sc.AddSingleton<string>("oo");
             // services.AddSingleton<IControllerFactory, MyCustomControllerFactory>();
             
-            IServiceProvider provider = sc.BuildServiceProvider();
+            System.IServiceProvider provider = sc.BuildServiceProvider();
             
             System.Type t = System.Type.GetType("");
             

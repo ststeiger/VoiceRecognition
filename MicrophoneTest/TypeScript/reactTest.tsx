@@ -86,3 +86,35 @@ function htmldecode(str: string): string
 
 
 StringToFragment("<div><span>hello world</span></div>").firstElementChild;
+
+
+
+function getScrollPercent() 
+{
+    let d = document.documentElement,
+        b = document.body,
+        st = 'scrollTop',
+        sh = 'scrollHeight';
+    
+    
+    // scrollTop + window_height
+    
+    
+    // An element's scrollTop value is a measurement of the distance from the element's top to its topmost visible content. 
+    // When an element's content does not generate a vertical scrollbar, then its scrollTop value is 0.)
+    
+    // The scrollHeight value is equal to the minimum height the element would require 
+    // in order to fit all the content in the viewport without using a vertical scrollbar. 
+
+    // clientHeight can be calculated as: CSS height + CSS padding - height of horizontal scrollbar (if present).
+
+
+    // document.documentElement.scrollHeight = 10285
+    // document.documentElement.clientHeight = 678
+    
+    // document.documentElement.scrollTo(0,120)
+    // document.documentElement.scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)
+    // scrolltop/(scrollHeight - clientHeight)
+    // = scrollPosition / (document.height - window.height)
+    return (d[st]||b[st]) / ((d[sh]||b[sh]) - d.clientHeight) * 100;
+}

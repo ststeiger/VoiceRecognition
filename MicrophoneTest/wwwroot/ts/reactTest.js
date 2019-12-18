@@ -75,3 +75,7 @@ function htmldecode(str) {
     return s;
 }
 StringToFragment("<div><span>hello world</span></div>").firstElementChild;
+function getScrollPercent() {
+    var d = document.documentElement, b = document.body, st = 'scrollTop', sh = 'scrollHeight';
+    return (d[st] || b[st]) / ((d[sh] || b[sh]) - d.clientHeight) * 100;
+}

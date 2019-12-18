@@ -135,6 +135,60 @@
 </head>
 <body>konsole
 
+
+<style type="text/css">
+/*<![CDATA[*/
+
+* {
+    box-sizing: border-box;
+}
+
+.fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #010101;
+    padding-left: 0;
+}
+
+
+.fixed, .progress-wrap {
+    height: .3125rem;
+    z-index: 5;
+}
+
+
+.progress-wrap {
+    background-color: #fb3640;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.progress-wrap .progress-bar 
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #eaeff1;
+    height: .3125rem;
+    width: 100%;
+    z-index: 6;
+}
+
+/*]]>*/
+</style>
+
+<div class="fixed">
+    <div class="progress-wrap" data-progress-percent="0">
+        <div class="progress-bar" data-style="left: 0px;" style="left: 25%; background-color: yellow;"></div>
+    </div>
+</div>
+
+
+
+
     <div class="module text">
         <p class="bodytext"><span style="font-weight: bold;">Zentrumsapotheke Seon AG</span></p>
         <p class="bodytext">R. Schreiber</p>
