@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SpeechRecog\Example1.cs" Link="Example1.cs" />
+    <Compile Include="..\SpeechRecog\Example2.cs" Link="Example2.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\System.Speech\System.Speech.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -311,11 +311,15 @@ namespace System.Speech.Internal.ObjectTokens
 			}
 		}
 
+		
 		private static IntPtr HKEYfromRegKey(RegistryKey regKey)
 		{
 			Type typeFromHandle = typeof(RegistryKey);
 			BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.NonPublic;
 			FieldInfo field = typeFromHandle.GetField("hkey", bindingAttr);
+			if(field == null)
+				field = typeFromHandle.GetField("_hkey", bindingAttr);
+			
 			SafeHandle safeHandle = (SafeHandle)field.GetValue(regKey);
 			return safeHandle.DangerousGetHandle();
 		}
@@ -329,6 +333,7 @@ namespace System.Speech.Internal.ObjectTokens
 			}
 			return HKEYfromRegKey(registryKey);
 		}
+		
 
 		private static string GetFirstKeyAndParseRemainder(ref string registryPath)
 		{

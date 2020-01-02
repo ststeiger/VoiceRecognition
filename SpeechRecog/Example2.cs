@@ -1,34 +1,32 @@
 ﻿
-using System.Speech.Recognition;
-//using System.Speech.Synthesis;
-
-
 namespace SpeechRecog
 {
 
 
-    class Example2
+    public class Example2
     {
 
-        static void Test()
+
+        public static void Test()
         {
-            SpeechRecognitionEngine recEngine = new SpeechRecognitionEngine();
+            System.Speech.Recognition.SpeechRecognitionEngine recEngine = new System.Speech.Recognition.SpeechRecognitionEngine();
             recEngine.SetInputToDefaultAudioDevice();
 
-            Choices commands = new Choices();
+            System.Speech.Recognition.Choices commands = new System.Speech.Recognition.Choices();
             commands.Add(new string[] { "say Hi", "say Hello" });
-            GrammarBuilder gb = new GrammarBuilder();
+            System.Speech.Recognition.GrammarBuilder gb = new System.Speech.Recognition.GrammarBuilder();
             gb.Append(commands);
-            Grammar g = new Grammar(gb);
+            System.Speech.Recognition.Grammar g = new System.Speech.Recognition.Grammar(gb);
 
             recEngine.LoadGrammarAsync(g);
-            recEngine.RecognizeAsync(RecognizeMode.Multiple);
+            recEngine.RecognizeAsync(System.Speech.Recognition.RecognizeMode.Multiple);
 
-            recEngine.SpeechRecognized += recEngine_SpeechRecognized;
-        }
+            recEngine.SpeechRecognized += OnSpeechRecognized;
+        } // End Sub Test 
+
 
         // Create a simple handler for the SpeechRecognized event
-        static void recEngine_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        static void OnSpeechRecognized(object sender, System.Speech.Recognition.SpeechRecognizedEventArgs e)
         {
             System.Console.WriteLine("Speech recognized: {0}", e.Result.Text);
             switch (e.Result.Text)
@@ -38,10 +36,11 @@ namespace SpeechRecog
                     break;
                     //  default:
                     //  break;
-            }
-        }
-
-    }
+            } // End Switch 
+        } // End Sub OnSpeechRecognized
 
 
-}
+    } // End Class Example2 
+
+
+} // End Namespace SpeechRecog

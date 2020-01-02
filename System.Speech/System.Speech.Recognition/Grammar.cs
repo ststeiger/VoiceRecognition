@@ -789,8 +789,11 @@ namespace System.Speech.Recognition
 
 		private Stream LoadCfgFromResource(bool stgInit)
 		{
-			Assembly assembly = Assembly.GetAssembly(GetType());
-			Stream manifestResourceStream = assembly.GetManifestResourceStream(ResourceName);
+			System.Type t = typeof(System.Speech.SR);
+			Assembly assembly = t.Assembly;
+
+			Stream manifestResourceStream = assembly.GetManifestResourceStream(t.Namespace + "." + this.ResourceName);
+
 			if (manifestResourceStream == null)
 			{
 				throw new FormatException(SR.Get(SRID.RecognizerInvalidBinaryGrammar));

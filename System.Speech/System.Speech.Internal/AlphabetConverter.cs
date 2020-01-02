@@ -228,8 +228,10 @@ namespace System.Speech.Internal
 
 		private PhoneMapData CreateMap(string resourceName)
 		{
-			Assembly assembly = Assembly.GetAssembly(GetType());
-			Stream manifestResourceStream = assembly.GetManifestResourceStream(resourceName);
+			System.Type t = typeof(System.Speech.SR);
+			Assembly assembly = t.Assembly;
+			
+			Stream manifestResourceStream = assembly.GetManifestResourceStream(t.Namespace + "." + resourceName);
 			if (manifestResourceStream == null)
 			{
 				throw new FileLoadException(SR.Get(SRID.CannotLoadResourceFromManifest, resourceName, assembly.FullName));
