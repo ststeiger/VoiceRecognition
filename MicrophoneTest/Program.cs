@@ -19,20 +19,7 @@ namespace MicrophoneTest
 
         public static void Main(string[] args)
         {
-            // ListAvailableRecognizers();
             CreateWebHostBuilder(args).Build().Run();
-        }
-
-
-        public static void ListAvailableRecognizers()
-        {
-            // Speech SDK needs to be installed 
-            // https://www.microsoft.com/en-us/download/details.aspx?id=10121
-
-            foreach (System.Speech.Recognition.RecognizerInfo ri in System.Speech.Recognition.SpeechRecognitionEngine.InstalledRecognizers())
-            {
-                System.Console.WriteLine(ri.Culture.TwoLetterISOLanguageName);
-            }
         }
 
 
