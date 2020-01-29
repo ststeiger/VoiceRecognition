@@ -138,9 +138,9 @@ namespace RasterImageAsSvg
 
 
                 dr["Unencoded"] = display;
-                dr["JS escape"] = Microsoft.JScript.GlobalObject.escape(t);
-                dr["JS encodeURIComponent"] = Microsoft.JScript.GlobalObject.encodeURIComponent(t);
-                dr["JS encodeURI"] = Microsoft.JScript.GlobalObject.encodeURI(t);
+                dr["JS escape"] = JavaScript.Global.escape(t);
+                dr["JS encodeURIComponent"] = JavaScript.Global.encodeURIComponent(t);
+                dr["JS encodeURI"] = JavaScript.Global.encodeURI(t);
 
                 dr["HttpUtility UrlEncode"] = System.Web.HttpUtility.UrlEncode(t);
                 dr["HttpUtility UrlEncodeUnicode"] = System.Web.HttpUtility.UrlEncodeUnicode(t);
@@ -182,13 +182,13 @@ namespace RasterImageAsSvg
             // System.Uri.HexUnescape
 
 
-            // Microsoft.JScript.GlobalObject.escape
-            // Microsoft.JScript.GlobalObject.encodeURIComponent
-            // Microsoft.JScript.GlobalObject.encodeURI
+            // JavaScript.Global.escape
+            // JavaScript.Global.encodeURIComponent
+            // JavaScript.Global.encodeURI
 
-            // Microsoft.JScript.GlobalObject.unescape
-            // Microsoft.JScript.GlobalObject.decodeURIComponent
-            // Microsoft.JScript.GlobalObject.decodeURI
+            // JavaScript.Global.unescape
+            // JavaScript.Global.decodeURIComponent
+            // JavaScript.Global.decodeURI
         }
 
 

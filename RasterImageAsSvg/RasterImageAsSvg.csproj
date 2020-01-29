@@ -53,9 +53,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageEmbedding.cs" />
-    <Compile Include="JScript\JScript.cs" />
-    <Compile Include="JScript\JScriptException.cs" />
-    <Compile Include="JScript\JSError.cs" />
+    <Compile Include="JavaScript\Global.cs" />
+    <Compile Include="JavaScript\JavaScriptException.cs" />
+    <Compile Include="JavaScript\JavaScriptError.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

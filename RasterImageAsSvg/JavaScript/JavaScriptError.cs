@@ -1,9 +1,9 @@
 ﻿
-namespace Microsoft.JScript
+namespace JavaScript
 {
 
 
-    public enum JSError
+    public enum JavaScriptError
     {
         /// <summary>Kein Fehler.Dies ist der Standardwert (0) für die Enumeration.</summary>
         NoError = 0,

@@ -1,10 +1,12 @@
 ﻿
-namespace Microsoft.JScript
+namespace JavaScript
 {
 
 
-    public class GlobalObject
+    public class Global
     {
+
+
         private enum URISetType
         {
             None,
@@ -35,7 +37,7 @@ namespace Microsoft.JScript
             int num2;
             if ((num = HexDigit(ch1)) < 0 || (num2 = HexDigit(ch2)) < 0)
             {
-                throw new JScriptException(JSError.URIDecodeError);
+                throw new JavaScriptException(JavaScriptError.URIDecodeError);
             }
             return (byte)((num << 4) | num2);
         }
@@ -85,24 +87,23 @@ namespace Microsoft.JScript
         }
 
 
-        private static string Decode(object encodedURI, URISetType flags)
+        private static string Decode(string encodedURI, URISetType flags)
         {
-            string text = System.Convert.ToString(encodedURI);
             System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder();
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < encodedURI.Length; i++)
             {
-                char c = text[i];
+                char c = encodedURI[i];
                 if (c != '%')
                 {
                     stringBuilder.Append(c);
                     continue;
                 }
                 int num = i;
-                if (i + 2 >= text.Length)
+                if (i + 2 >= encodedURI.Length)
                 {
-                    throw new JScriptException(JSError.URIDecodeError);
+                    throw new JavaScriptException(JavaScriptError.URIDecodeError);
                 }
-                byte b = HexValue(text[i + 1], text[i + 2]);
+                byte b = HexValue(encodedURI[i + 1], encodedURI[i + 2]);
                 i += 2;
                 char c2;
                 if ((b & 0x80) == 0)
@@ -115,35 +116,35 @@ namespace Microsoft.JScript
                     for (j = 1; ((b << j) & 0x80) != 0; j++)
                     {
                     }
-                    if (j == 1 || j > 4 || i + (j - 1) * 3 >= text.Length)
+                    if (j == 1 || j > 4 || i + (j - 1) * 3 >= encodedURI.Length)
                     {
-                        throw new JScriptException(JSError.URIDecodeError);
+                        throw new JavaScriptException(JavaScriptError.URIDecodeError);
                     }
                     int num2 = b & (255 >> j + 1);
                     while (j > 1)
                     {
-                        if (text[i + 1] != '%')
+                        if (encodedURI[i + 1] != '%')
                         {
-                            throw new JScriptException(JSError.URIDecodeError);
+                            throw new JavaScriptException(JavaScriptError.URIDecodeError);
                         }
-                        b = HexValue(text[i + 2], text[i + 3]);
+                        b = HexValue(encodedURI[i + 2], encodedURI[i + 3]);
                         i += 3;
                         if ((b & 0xC0) != 128)
                         {
-                            throw new JScriptException(JSError.URIDecodeError);
+                            throw new JavaScriptException(JavaScriptError.URIDecodeError);
                         }
                         num2 = ((num2 << 6) | (b & 0x3F));
                         j--;
                     }
                     if (num2 >= 55296 && num2 < 57344)
                     {
-                        throw new JScriptException(JSError.URIDecodeError);
+                        throw new JavaScriptException(JavaScriptError.URIDecodeError);
                     }
                     if (num2 >= 65536)
                     {
                         if (num2 > 1114111)
                         {
-                            throw new JScriptException(JSError.URIDecodeError);
+                            throw new JavaScriptException(JavaScriptError.URIDecodeError);
                         }
                         stringBuilder.Append((char)(((num2 - 65536 >> 10) & 0x3FF) + 55296));
                         stringBuilder.Append((char)(((num2 - 65536) & 0x3FF) + 56320));
@@ -153,7 +154,7 @@ namespace Microsoft.JScript
                 }
                 if (InURISet(c2, flags))
                 {
-                    stringBuilder.Append(text, num, i - num + 1);
+                    stringBuilder.Append(encodedURI, num, i - num + 1);
                 }
                 else
                 {
@@ -163,12 +164,12 @@ namespace Microsoft.JScript
             return stringBuilder.ToString();
         }
 
-        public static string decodeURI(object encodedURI)
+        public static string decodeURI(string encodedURI)
         {
             return Decode(encodedURI, URISetType.Reserved);
         }
 
-        public static string decodeURIComponent(object encodedURI)
+        public static string decodeURIComponent(string encodedURI)
         {
             return Decode(encodedURI, URISetType.None);
         }
@@ -182,13 +183,12 @@ namespace Microsoft.JScript
             bs.Append((char)((num >= 10) ? (num - 10 + 65) : (num + 48)));
         }
 
-        private static string Encode(object uri, URISetType flags)
+        private static string Encode(string uri, URISetType flags)
         {
-            string text = System.Convert.ToString(uri);
             System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder();
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < uri.Length; i++)
             {
-                char c = text[i];
+                char c = uri[i];
                 if (InURISet(c, flags))
                 {
                     stringBuilder.Append(c);
@@ -215,16 +215,16 @@ namespace Microsoft.JScript
                 }
                 if (num >= 56320 && num <= 57343)
                 {
-                    throw new JScriptException(JSError.URIEncodeError);
+                    throw new JavaScriptException(JavaScriptError.URIEncodeError);
                 }
-                if (++i >= text.Length)
+                if (++i >= uri.Length)
                 {
-                    throw new JScriptException(JSError.URIEncodeError);
+                    throw new JavaScriptException(JavaScriptError.URIEncodeError);
                 }
-                int num2 = text[i];
+                int num2 = uri[i];
                 if (num2 < 56320 || num2 > 57343)
                 {
-                    throw new JScriptException(JSError.URIEncodeError);
+                    throw new JavaScriptException(JavaScriptError.URIEncodeError);
                 }
                 num = (num - 55296 << 10) + num2 + 9216;
                 AppendInHex(stringBuilder, (num >> 18) | 0xF0);
@@ -236,20 +236,19 @@ namespace Microsoft.JScript
         }
 
 
-        public static string encodeURI(object uri)
+        public static string encodeURI(string uri)
         {
             return Encode(uri, (URISetType)3);
         }
 
-        public static string encodeURIComponent(object uriComponent)
+        public static string encodeURIComponent(string uriComponent)
         {
             return Encode(uriComponent, URISetType.Unescaped);
         }
 
 
-        public static string escape(object @string)
+        public static string escape(string text)
         {
-            string text = System.Convert.ToString(@string);
             string text2 = "0123456789ABCDEF";
             int length = text.Length;
             System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder(length * 2);
@@ -284,9 +283,8 @@ namespace Microsoft.JScript
         /// <summary>Konvertiert Zeichen, für die das Escapezeichen % verwendet wird (@, *, _, +, -, ., /), in die angegebene Zeichenfolge im ursprünglichen Format.Die Escapezeichen werden in Unicode-Schreibweise ausgedrückt.</summary>
 		/// <returns>Eine neue Kopie von <paramref name="string" />, in der die Zeichen, für die das Escapezeichen verwendet wird, in ihr ursprüngliches Format konvertiert werden.</returns>
 		/// <param name="string">Die zu konvertierende Zeichenfolge.</param>
-        public static string unescape(object @string)
+        public static string unescape(string text)
         {
-            string text = System.Convert.ToString(@string);
             int length = text.Length;
             System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder(length);
             int num = -1;
