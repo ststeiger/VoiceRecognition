@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.960
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrophoneTest", "MicrophoneTest\MicrophoneTest.csproj", "{B2354364-5C01-4652-AA17-3EAEA9E12154}"
 EndProject
@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechRecog", "SpeechRecog\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Speech", "System.Speech\System.Speech.csproj", "{8578977B-AAA2-49CC-8562-3E561BEA2040}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechRecogCore", "SpeechRecogCore\SpeechRecogCore.csproj", "{325F2CF2-09B3-411D-9104-2C84E5853544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeechRecogCore", "SpeechRecogCore\SpeechRecogCore.csproj", "{325F2CF2-09B3-411D-9104-2C84E5853544}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechRecogNetStandard", "SpeechRecogNetStandard\SpeechRecogNetStandard.csproj", "{4C58160B-C1C4-4DBB-BE77-5DB671AA4809}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RasterImageAsSvg", "RasterImageAsSvg\RasterImageAsSvg.csproj", "{CB879A94-943F-4778-B941-63C1CAC02C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{4C58160B-C1C4-4DBB-BE77-5DB671AA4809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C58160B-C1C4-4DBB-BE77-5DB671AA4809}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C58160B-C1C4-4DBB-BE77-5DB671AA4809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB879A94-943F-4778-B941-63C1CAC02C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB879A94-943F-4778-B941-63C1CAC02C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB879A94-943F-4778-B941-63C1CAC02C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB879A94-943F-4778-B941-63C1CAC02C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
