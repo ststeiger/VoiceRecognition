@@ -142,6 +142,9 @@ namespace RasterImageAsSvg
                 dr["JS encodeURIComponent"] = JavaScript.Global.encodeURIComponent(t);
                 dr["JS encodeURI"] = JavaScript.Global.encodeURI(t);
 
+                // JavaScript.Global.XmlAttributeEscape(t);
+
+
                 dr["HttpUtility UrlEncode"] = System.Web.HttpUtility.UrlEncode(t);
                 dr["HttpUtility UrlEncodeUnicode"] = System.Web.HttpUtility.UrlEncodeUnicode(t);
                 dr["HttpUtility UrlPathEncode"] = System.Web.HttpUtility.UrlPathEncode(t);

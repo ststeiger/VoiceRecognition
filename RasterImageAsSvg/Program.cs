@@ -13,14 +13,13 @@ namespace RasterImageAsSvg
         [System.STAThread]
         static void Main(string[] args)
         {
-#if true
+#if true 
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new Form1());
 #endif
 
             // ImageEmbedding.Test();
-
 
             System.Console.WriteLine(System.Environment.NewLine);
             System.Console.WriteLine(" --- Press any key to continue ");

@@ -7,6 +7,45 @@ namespace JavaScript
     {
 
 
+        public static string XmlAttributeEscape(string inputString)
+        {
+            string retValue = "";
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            if (inputString == null)
+                return retValue;
+
+            for (var i = 0; i < inputString.Length; ++i)
+            {
+                switch (inputString[i])
+                {
+                    case '&':
+                        sb.Append("&amp;");
+                        break;
+                    case '"':
+                        sb.Append("&quot;");
+                        break;
+                    case '<':
+                        sb.Append("&lt;");
+                        break;
+                    case '>':
+                        sb.Append("&gt;");
+                        break;
+                    default:
+                        sb.Append(inputString[i]);
+                        break;
+                }
+
+
+            }
+
+            retValue = sb.ToString();
+            sb.Length = 0;
+            sb = null;
+            return retValue;
+        }
+
+
         private enum URISetType
         {
             None,
