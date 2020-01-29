@@ -1,10 +1,8 @@
-﻿using System.Runtime.InteropServices;
-
+﻿
 namespace Microsoft.JScript
 {
-    /// <summary>Gibt die JScript-Fehlermeldungen an.Diese Klasse gehört zur Kategorie für Kompilierungs- und Laufzeitzustände.</summary>
-    [Guid("268CA962-2FEF-3152-BA46-E18658B7FA4F")]
-    [ComVisible(true)]
+
+
     public enum JSError
     {
         /// <summary>Kein Fehler.Dies ist der Standardwert (0) für die Enumeration.</summary>
