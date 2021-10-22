@@ -101,23 +101,34 @@ class TestClass
             if (key !== 'constructor')
             {
                 // console.log(key);
-
+                // function has a propertyDescriptor as well, with function as value 
                 let desc = Object.getOwnPropertyDescriptor(self.constructor.prototype, key);
 
                 if (desc != null)
                 {
+                    // We can only redefine configurable properties !
+                    if (!desc.configurable)
+                    {
+                        console.log("AUTOBIND-WARNING: Property \"" + key + "\" not configurable ! (" + self.constructor.name + ")");
+                        continue;
+                    }
+
                     let g = desc.get != null;
                     let s = desc.set != null;
 
                     if (g || s)
                     {
+                        let newDescriptor: PropertyDescriptor = {};
+                        newDescriptor.enumerable = desc.enumerable;
+                        newDescriptor.configurable = desc.configurable
+
                         if (g)
-                            desc.get = desc.get.bind(self);
+                            newDescriptor.get = desc.get.bind(self);
 
                         if (s)
-                            desc.set = desc.set.bind(self);
+                            newDescriptor.set = desc.set.bind(self);
 
-                        Object.defineProperty(self.constructor.prototype, key, desc);
+                        Object.defineProperty(self, key, newDescriptor);
                         continue; // if it's a property, it can't be a function 
                     } // End if (g || s) 
 
@@ -194,22 +205,34 @@ class TestClass
             if (key !== 'constructor')
             {
                 // console.log(key);
+                // function has a propertyDescriptor as well, with function as value 
                 let desc = Object.getOwnPropertyDescriptor(self.constructor.prototype, key);
 
                 if (desc != null)
                 {
+                    // We can only redefine configurable properties !
+                    if (!desc.configurable)
+                    {
+                        console.log("AUTOTRACE-WARNING: Property \"" + key + "\" not configurable ! (" + self.constructor.name + ")");
+                        continue;
+                    }
+
                     let g = desc.get != null;
                     let s = desc.set != null;
 
                     if (g || s)
                     {
+                        let newDescriptor: PropertyDescriptor = {};
+                        newDescriptor.enumerable = desc.enumerable;
+                        newDescriptor.configurable = desc.configurable
+
                         if (g)
-                            desc.get = getLoggableFunction(desc.get.bind(self), "Property", "get_" + key);
+                            newDescriptor.get = getLoggableFunction(desc.get.bind(self), "Property", "get_" + key)
 
                         if (s)
-                            desc.set = getLoggableFunction(desc.set.bind(self), "Property", "set_" + key);
+                            newDescriptor.set = getLoggableFunction(desc.set.bind(self), "Property", "set_" + key)
 
-                        Object.defineProperty(self.constructor.prototype, key, desc);
+                        Object.defineProperty(self, key, newDescriptor);
                         continue; // if it's a property, it can't be a function 
                     } // End if (g || s) 
 
